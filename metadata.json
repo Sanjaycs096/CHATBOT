@@ -1,0 +1,6 @@
+{
+  "name": "PolyTalk AI",
+  "description": "A beautiful, premium multilingual AI assistant supporting English, Tamil, and Malayalam with text and voice capabilities.",
+  "requestFramePermissions": ["microphone"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -1,0 +1,767 @@
+<!doctype html>
+<html lang="en" class="h-full">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PolyTalk AI - Multilingual AI Assistant</title>
+    <!-- Google Fonts: Inter & Space Grotesk -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet" />
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="/static/css/style.css" />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🤖</text></svg>">
+  </head>
+  <body class="bg-cosmic text-slate-100 font-sans h-full overflow-x-hidden flex flex-col relative select-none">
+    
+    <!-- Floating Particles Background Layer -->
+    <div id="particles-container"></div>
+
+    <!-- PRELOADER / INITIALIZATION SCREEN -->
+    <div id="preloader" class="fixed inset-0 bg-slate-950 z-50 flex flex-col items-center justify-center transition-opacity duration-700">
+      <div class="relative flex flex-col items-center">
+        <!-- Glowing Ring Animation -->
+        <div class="w-24 h-24 rounded-full border-4 border-purple-500/10 border-t-purple-500 animate-spin flex items-center justify-center">
+          <div class="w-16 h-16 rounded-full border-4 border-fuchsia-500/10 border-t-fuchsia-500 animate-spin reverse-spin"></div>
+        </div>
+        <div class="absolute inset-0 flex items-center justify-center">
+          <span class="text-xs font-semibold tracking-wider text-purple-400 font-display">POLY</span>
+        </div>
+      </div>
+      <h2 class="mt-8 text-2xl font-bold font-display tracking-wide text-gradient">PolyTalk AI</h2>
+      <!-- Sequential loading status indicators -->
+      <div class="mt-4 flex flex-col items-center space-y-1 text-sm text-slate-400 font-mono" id="preloader-steps">
+        <div id="step-1" class="flex items-center space-x-2 text-purple-400">
+          <span class="w-2 h-2 rounded-full bg-purple-500 animate-pulse"></span>
+          <span>Initializing AI Core...</span>
+        </div>
+        <div id="step-2" class="flex items-center space-x-2 opacity-30">
+          <span class="w-2 h-2 rounded-full bg-slate-500"></span>
+          <span>Loading NLP Pipeline...</span>
+        </div>
+        <div id="step-3" class="flex items-center space-x-2 opacity-30">
+          <span class="w-2 h-2 rounded-full bg-slate-500"></span>
+          <span>Preparing Voice Synthesis...</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- SYSTEM ALERTS CONTAINER -->
+    <div id="alert-toast" class="fixed top-4 right-4 z-50 transform translate-x-80 opacity-0 transition-all duration-300 pointer-events-none">
+      <div class="glass px-4 py-3 rounded-xl shadow-2xl flex items-center space-x-3 border-l-4 border-l-purple-500">
+        <i data-lucide="info" class="w-5 h-5 text-purple-400" id="toast-icon"></i>
+        <p class="text-sm font-medium text-slate-200" id="toast-message">Voice system active</p>
+      </div>
+    </div>
+
+    <!-- PHASE 1: PREMUM LANDING PAGE VIEW -->
+    <div id="landing-page-view" class="w-full min-h-screen overflow-y-auto relative flex flex-col justify-between z-10 transition-all duration-500">
+      
+      <!-- Landing Navbar -->
+      <nav class="sticky top-0 w-full z-40 glass border-b border-slate-800/60 py-4 px-6 md:px-12 flex items-center justify-between">
+        <div class="flex items-center space-x-3">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-purple-600 to-fuchsia-600 flex items-center justify-center shadow-lg shadow-purple-500/20">
+            <i data-lucide="bot" class="w-5 h-5 text-white animate-pulse"></i>
+          </div>
+          <span class="text-xl font-bold font-display text-gradient tracking-wide">PolyTalk AI</span>
+        </div>
+        <div class="hidden md:flex items-center space-x-8 text-sm font-medium text-slate-300">
+          <a href="#hero-section" class="hover:text-white transition-colors">Home</a>
+          <a href="#features-section" class="hover:text-white transition-colors">Features</a>
+          <a href="#languages-section" class="hover:text-white transition-colors">Languages</a>
+          <a href="#technology-section" class="hover:text-white transition-colors">Technology</a>
+        </div>
+        <div>
+          <button id="hero-launch-nav-btn" class="py-2 px-5 bg-gradient-to-r from-purple-600 to-fuchsia-600 hover:from-purple-500 hover:to-fuchsia-500 active:scale-[0.98] transition-all rounded-xl text-sm font-semibold text-white shadow-lg shadow-purple-500/10">
+            Launch AI
+          </button>
+        </div>
+      </nav>
+
+      <!-- Hero Section -->
+      <section id="hero-section" class="max-w-7xl mx-auto w-full py-12 md:py-20 px-6 md:px-12 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <!-- Text container -->
+        <div class="space-y-6 text-left relative z-10">
+          <div class="inline-flex items-center space-x-2 bg-purple-500/10 text-purple-300 border border-purple-500/20 rounded-full px-3 py-1 text-xs font-semibold font-mono uppercase tracking-wider animate-bounce">
+            <span>🚀 Version 1.0.0 Now Live</span>
+          </div>
+          <h1 class="text-4xl md:text-6xl font-extrabold font-display leading-tight tracking-tight">
+            Conversational Mastery in <br>
+            <span class="text-gradient">PolyTalk AI</span>
+          </h1>
+          <p class="text-lg text-slate-300 max-w-xl leading-relaxed">
+            Your intelligent multilingual companion. Experience deep-fidelity natural conversation in English, Tamil, and Malayalam with instant script detection and authentic voice feedback.
+          </p>
+          <div class="flex flex-wrap gap-4 pt-2">
+            <button id="hero-launch-cta-btn" class="py-4 px-8 bg-gradient-to-r from-purple-600 to-fuchsia-600 hover:from-purple-500 hover:to-fuchsia-500 active:scale-[0.98] transition-all rounded-2xl text-base font-bold text-white shadow-xl shadow-purple-500/20 flex items-center space-x-3 group">
+              <span>Launch PolyTalk AI</span>
+              <i data-lucide="arrow-right" class="w-5 h-5 group-hover:translate-x-1.5 transition-transform"></i>
+            </button>
+            <a href="#features-section" class="py-4 px-8 bg-slate-900/60 hover:bg-slate-800/80 active:scale-[0.98] transition-all rounded-2xl text-base font-semibold text-slate-300 border border-slate-800 flex items-center space-x-2">
+              <span>Learn More</span>
+            </a>
+          </div>
+          <div class="flex items-center space-x-6 pt-4 text-xs font-mono text-slate-400">
+            <span class="flex items-center space-x-2">
+              <i data-lucide="shield-check" class="w-4 h-4 text-emerald-400"></i>
+              <span>Secure Server-Side</span>
+            </span>
+            <span class="flex items-center space-x-2">
+              <i data-lucide="zap" class="w-4 h-4 text-amber-400"></i>
+              <span>Zero-latency Core</span>
+            </span>
+          </div>
+        </div>
+
+        <!-- Illustration container -->
+        <div class="relative flex justify-center items-center h-80 md:h-[450px]">
+          <!-- Floating Blur Rings -->
+          <div class="absolute w-72 h-72 bg-purple-500/20 rounded-full blur-[80px] -top-10 -left-10 animate-pulse"></div>
+          <div class="absolute w-72 h-72 bg-fuchsia-500/20 rounded-full blur-[80px] -bottom-10 -right-10 animate-pulse delay-75"></div>
+
+          <!-- Central AI Robot Graphic -->
+          <div class="relative w-64 h-64 md:w-80 md:h-80 bg-slate-900/60 border border-slate-800/80 rounded-3xl p-6 shadow-2xl flex flex-col justify-between floating-ornament z-10 glass">
+            <div class="flex items-center justify-between border-b border-slate-800/60 pb-3">
+              <div class="flex items-center space-x-2">
+                <span class="w-3 h-3 rounded-full bg-emerald-500 animate-pulse"></span>
+                <span class="text-2xs font-mono text-slate-400">SYSTEM: ACTIVE</span>
+              </div>
+              <i data-lucide="cpu" class="w-5 h-5 text-purple-400"></i>
+            </div>
+            
+            <div class="flex flex-col items-center justify-center py-6 space-y-4">
+              <!-- Waveform bars -->
+              <div class="flex items-end space-x-1 h-12">
+                <span class="w-1.5 h-6 bg-purple-500 rounded-full animate-pulse" style="animation-duration: 0.8s"></span>
+                <span class="w-1.5 h-12 bg-fuchsia-500 rounded-full animate-pulse" style="animation-duration: 1.1s"></span>
+                <span class="w-1.5 h-8 bg-blue-500 rounded-full animate-pulse" style="animation-duration: 0.9s"></span>
+                <span class="w-1.5 h-10 bg-pink-500 rounded-full animate-pulse" style="animation-duration: 1.3s"></span>
+                <span class="w-1.5 h-5 bg-purple-500 rounded-full animate-pulse" style="animation-duration: 0.7s"></span>
+              </div>
+              <span class="text-xs font-mono text-slate-300 font-semibold tracking-wider">SPEECH RECOGNITION ACTIVE</span>
+            </div>
+
+            <!-- Typing Animation Simulation -->
+            <div class="bg-slate-950/60 px-4 py-2 rounded-xl text-center border border-slate-800/80">
+              <span class="text-3xs font-mono text-purple-300" id="landing-typing-preview"></span><span class="typing-cursor"></span>
+            </div>
+          </div>
+
+          <!-- Floating decorative cards around center -->
+          <div class="absolute -top-4 right-4 md:right-8 bg-slate-900/80 border border-slate-800/80 p-3 rounded-xl shadow-xl floating-ornament-delay flex items-center space-x-3 z-20 glass-light">
+            <div class="w-8 h-8 rounded-lg bg-emerald-500/20 flex items-center justify-center">
+              <span class="text-xs text-emerald-400 font-bold">ML</span>
+            </div>
+            <div class="text-left">
+              <p class="text-2xs text-slate-400 font-semibold uppercase">Malayalam Detected</p>
+              <p class="text-3xs text-slate-300 font-mono">നിങ്ങൾക്ക് എങ്ങനെയാണോ...</p>
+            </div>
+          </div>
+
+          <div class="absolute bottom-6 left-4 bg-slate-900/80 border border-slate-800/80 p-3 rounded-xl shadow-xl floating-ornament flex items-center space-x-3 z-20 glass-light">
+            <div class="w-8 h-8 rounded-lg bg-fuchsia-500/20 flex items-center justify-center">
+              <span class="text-xs text-fuchsia-400 font-bold">TA</span>
+            </div>
+            <div class="text-left">
+              <p class="text-2xs text-slate-400 font-semibold uppercase">Tamil Detected</p>
+              <p class="text-3xs text-slate-300 font-mono">வணக்கம்! நான் எப்படி...</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Feature Cards Section -->
+      <section id="features-section" class="max-w-7xl mx-auto w-full py-16 px-6 md:px-12 border-t border-slate-800/40">
+        <div class="text-center space-y-3 mb-12">
+          <h2 class="text-3xl font-bold font-display tracking-tight text-gradient">Features & System Capabilities</h2>
+          <p class="text-sm text-slate-400 max-w-lg mx-auto">Explore the deep technologies powering PolyTalk AI for classroom, college, and production deployment.</p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <!-- Card 1 -->
+          <div class="glass p-6 rounded-2xl space-y-4 hover:border-purple-500/30 transition-all duration-300 group">
+            <div class="w-12 h-12 rounded-xl bg-purple-500/10 flex items-center justify-center border border-purple-500/20 group-hover:scale-110 transition-transform">
+              <i data-lucide="cpu" class="w-6 h-6 text-purple-400"></i>
+            </div>
+            <h3 class="text-lg font-bold text-slate-100 font-display">🧠 AI Powered Core</h3>
+            <p class="text-xs text-slate-400 leading-relaxed">
+              Integrates the state-of-the-art Gemini 1.5/3.5 models securely server-side. Experience accurate reasoning, summaries, and creative replies.
+            </p>
+          </div>
+          <!-- Card 2 -->
+          <div class="glass p-6 rounded-2xl space-y-4 hover:border-purple-500/30 transition-all duration-300 group">
+            <div class="w-12 h-12 rounded-xl bg-fuchsia-500/10 flex items-center justify-center border border-fuchsia-500/20 group-hover:scale-110 transition-transform">
+              <i data-lucide="mic" class="w-6 h-6 text-fuchsia-400"></i>
+            </div>
+            <h3 class="text-lg font-bold text-slate-100 font-display">🎤 Voice Companion</h3>
+            <p class="text-xs text-slate-400 leading-relaxed">
+              Equipped with Web Speech SpeechRecognition and premium locale matching SpeechSynthesis playback for rich verbal interactions.
+            </p>
+          </div>
+          <!-- Card 3 -->
+          <div class="glass p-6 rounded-2xl space-y-4 hover:border-purple-500/30 transition-all duration-300 group">
+            <div class="w-12 h-12 rounded-xl bg-pink-500/10 flex items-center justify-center border border-pink-500/20 group-hover:scale-110 transition-transform">
+              <i data-lucide="languages" class="w-6 h-6 text-pink-400"></i>
+            </div>
+            <h3 class="text-lg font-bold text-slate-100 font-display">🌍 Dynamic Language Matching</h3>
+            <p class="text-xs text-slate-400 leading-relaxed">
+              Automatic script analysis parses Unicode blocks to classify inputs and prompts Gemini to respond precisely in English, Tamil, or Malayalam.
+            </p>
+          </div>
+          <!-- Card 4 -->
+          <div class="glass p-6 rounded-2xl space-y-4 hover:border-purple-500/30 transition-all duration-300 group">
+            <div class="w-12 h-12 rounded-xl bg-blue-500/10 flex items-center justify-center border border-blue-500/20 group-hover:scale-110 transition-transform">
+              <i data-lucide="zap" class="w-6 h-6 text-blue-400"></i>
+            </div>
+            <h3 class="text-lg font-bold text-slate-100 font-display">⚡ Extreme Response Speed</h3>
+            <p class="text-xs text-slate-400 leading-relaxed">
+              Built on Node/Flask asynchronous server-side routers for low-latency JSON delivery and streamlined DOM updating pipelines.
+            </p>
+          </div>
+          <!-- Card 5 -->
+          <div class="glass p-6 rounded-2xl space-y-4 hover:border-purple-500/30 transition-all duration-300 group">
+            <div class="w-12 h-12 rounded-xl bg-teal-500/10 flex items-center justify-center border border-teal-500/20 group-hover:scale-110 transition-transform">
+              <i data-lucide="lock" class="w-6 h-6 text-teal-400"></i>
+            </div>
+            <h3 class="text-lg font-bold text-slate-100 font-display">🔒 Enterprise Key Security</h3>
+            <p class="text-xs text-slate-400 leading-relaxed">
+              Protects API secrets via safe, server-only environment variables. High-contrast security guarantees no browser console key leakage.
+            </p>
+          </div>
+          <!-- Card 6 -->
+          <div class="glass p-6 rounded-2xl space-y-4 hover:border-purple-500/30 transition-all duration-300 group">
+            <div class="w-12 h-12 rounded-xl bg-amber-500/10 flex items-center justify-center border border-amber-500/20 group-hover:scale-110 transition-transform">
+              <i data-lucide="smartphone" class="w-6 h-6 text-amber-400"></i>
+            </div>
+            <h3 class="text-lg font-bold text-slate-100 font-display">📱 Responsive Adaptive Layout</h3>
+            <p class="text-xs text-slate-400 leading-relaxed">
+              Provides optimized fluid viewport scaling, touch-target expansion, collapsible slide drawers, and visual timers.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Supported Languages Section -->
+      <section id="languages-section" class="max-w-7xl mx-auto w-full py-16 px-6 md:px-12 border-t border-slate-800/40">
+        <div class="text-center space-y-3 mb-12">
+          <h2 class="text-3xl font-bold font-display tracking-tight text-gradient">Supported Dialects & Language Engines</h2>
+          <p class="text-sm text-slate-400 max-w-lg mx-auto">Engineered specifically to recognize, translate, and synthesize the following primary regional scripts.</p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="glass-card p-6 rounded-2xl text-center space-y-3 relative overflow-hidden">
+            <div class="text-4xl">🇺🇸</div>
+            <h3 class="text-lg font-bold font-display">English</h3>
+            <p class="text-2xs text-purple-300 font-mono">LOCALE: en-US / en-GB</p>
+            <p class="text-xs text-slate-400">Default global standard language setting with premium articulation and punctuation.</p>
+          </div>
+          <div class="glass-card p-6 rounded-2xl text-center space-y-3 relative overflow-hidden">
+            <div class="text-4xl">🇮🇳</div>
+            <h3 class="text-lg font-bold font-display">Tamil (தமிழ்)</h3>
+            <p class="text-2xs text-fuchsia-300 font-mono">LOCALE: ta-IN</p>
+            <p class="text-xs text-slate-400">Full Unicode block support. Highly accurate pronunciation matching and dialect synthesis.</p>
+          </div>
+          <div class="glass-card p-6 rounded-2xl text-center space-y-3 relative overflow-hidden">
+            <div class="text-4xl">🇮🇳</div>
+            <h3 class="text-lg font-bold font-display">Malayalam (മലയാളം)</h3>
+            <p class="text-2xs text-pink-300 font-mono">LOCALE: ml-IN</p>
+            <p class="text-xs text-slate-400">Authentic regional voice maps. Seamless Malayalam synthesis and natural vocabulary.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Technology Section -->
+      <section id="technology-section" class="max-w-7xl mx-auto w-full py-16 px-6 md:px-12 border-t border-slate-800/40">
+        <div class="text-center space-y-3 mb-12">
+          <h2 class="text-3xl font-bold font-display tracking-tight text-gradient">System Architecture & Tech Stack</h2>
+          <p class="text-sm text-slate-400 max-w-lg mx-auto">Fully compliant tech stack suitable for portfolio showcases, hackathons, and server deployment.</p>
+        </div>
+        <div class="flex flex-wrap items-center justify-center gap-4">
+          <span class="px-4 py-2 bg-slate-900 border border-slate-800 rounded-xl text-xs font-semibold text-slate-300 flex items-center space-x-2">
+            <i data-lucide="file-code" class="w-4 h-4 text-orange-400"></i>
+            <span>HTML5</span>
+          </span>
+          <span class="px-4 py-2 bg-slate-900 border border-slate-800 rounded-xl text-xs font-semibold text-slate-300 flex items-center space-x-2">
+            <i data-lucide="palette" class="w-4 h-4 text-blue-400"></i>
+            <span>CSS3 / Tailwind</span>
+          </span>
+          <span class="px-4 py-2 bg-slate-900 border border-slate-800 rounded-xl text-xs font-semibold text-slate-300 flex items-center space-x-2">
+            <i data-lucide="braces" class="w-4 h-4 text-yellow-400"></i>
+            <span>JavaScript (ES6+)</span>
+          </span>
+          <span class="px-4 py-2 bg-slate-900 border border-slate-800 rounded-xl text-xs font-semibold text-slate-300 flex items-center space-x-2">
+            <i data-lucide="terminal" class="w-4 h-4 text-green-400"></i>
+            <span>Python / Flask</span>
+          </span>
+          <span class="px-4 py-2 bg-slate-900 border border-slate-800 rounded-xl text-xs font-semibold text-slate-300 flex items-center space-x-2">
+            <i data-lucide="server" class="w-4 h-4 text-indigo-400"></i>
+            <span>Node.js / Express</span>
+          </span>
+          <span class="px-4 py-2 bg-slate-900 border border-slate-800 rounded-xl text-xs font-semibold text-slate-300 flex items-center space-x-2">
+            <i data-lucide="gem" class="w-4 h-4 text-purple-400"></i>
+            <span>Google Gemini AI</span>
+          </span>
+          <span class="px-4 py-2 bg-slate-900 border border-slate-800 rounded-xl text-xs font-semibold text-slate-300 flex items-center space-x-2">
+            <i data-lucide="volume-2" class="w-4 h-4 text-pink-400"></i>
+            <span>Speech Recognition & Synthesis</span>
+          </span>
+        </div>
+      </section>
+
+      <!-- Landing Footer -->
+      <footer class="w-full py-8 border-t border-slate-800/60 bg-slate-950/40 text-center space-y-4">
+        <div class="flex items-center justify-center space-x-3 text-slate-400 text-xs font-mono">
+          <span>Developed by PolyTalk AI Team</span>
+          <span class="w-1 h-1 rounded-full bg-slate-700"></span>
+          <span>Open Source</span>
+          <span class="w-1 h-1 rounded-full bg-slate-700"></span>
+          <span>v1.0.0 Release</span>
+        </div>
+      </footer>
+
+    </div>
+
+    <!-- PHASE 2: MAIN CHAT VIEW (REMAINS COMPATIBLE, DEEPLY REINFORCED) -->
+    <div id="chat-page-view" class="hidden h-full w-full overflow-hidden relative z-10 flex transition-all duration-500">
+
+      <!-- SIDEBAR -->
+      <aside id="sidebar" class="w-80 h-full glass border-r border-slate-800/60 flex flex-col shrink-0 transition-transform duration-300 z-30 fixed lg:static -translate-x-full lg:translate-x-0">
+        <!-- Sidebar Header -->
+        <div class="p-4 border-b border-slate-800/60 flex items-center justify-between">
+          <div class="flex items-center space-x-3">
+            <button id="sidebar-home-btn" class="p-1.5 rounded-lg hover:bg-slate-800 text-slate-400 hover:text-white transition-colors" title="Go Home">
+              <i data-lucide="home" class="w-4 h-4"></i>
+            </button>
+            <div>
+              <h1 class="text-lg font-bold font-display text-gradient">PolyTalk AI</h1>
+              <!-- Online Status / Connection indicators -->
+              <span class="text-xs text-slate-400 font-mono tracking-wider flex items-center" id="network-status-text">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1.5 animate-pulse" id="network-status-indicator"></span>
+                <span id="network-status-label">ONLINE</span>
+              </span>
+            </div>
+          </div>
+          <button id="close-sidebar-btn" class="lg:hidden p-2 rounded-lg hover:bg-slate-800 text-slate-400 hover:text-slate-200" aria-label="Close Sidebar">
+            <i data-lucide="chevrons-left" class="w-5 h-5"></i>
+          </button>
+        </div>
+
+        <!-- Sidebar Actions -->
+        <div class="p-4 space-y-3">
+          <button id="new-chat-btn" class="w-full py-3 px-4 bg-gradient-to-r from-purple-600 to-fuchsia-600 hover:from-purple-500 hover:to-fuchsia-500 active:scale-[0.98] transition-all rounded-xl font-medium text-sm flex items-center justify-center space-x-2 shadow-lg shadow-purple-500/10">
+            <i data-lucide="plus-circle" class="w-4 h-4"></i>
+            <span>New Session</span>
+          </button>
+          
+          <button id="clear-chat-btn" class="w-full py-2.5 px-4 bg-slate-800/40 hover:bg-slate-800 text-slate-300 hover:text-slate-100 transition-colors rounded-xl text-sm flex items-center justify-center space-x-2 border border-slate-700/30">
+            <i data-lucide="trash-2" class="w-4 h-4 text-rose-400"></i>
+            <span>Reset Session</span>
+          </button>
+        </div>
+
+        <!-- Sidebar Content (Scrollable) -->
+        <div class="flex-1 overflow-y-auto p-4 space-y-6">
+          
+          <!-- Premium Feature: Theme Accent color picker -->
+          <div class="space-y-2">
+            <h3 class="text-xs font-semibold uppercase tracking-wider text-purple-400 font-display">Theme Accent</h3>
+            <div class="flex items-center space-x-2 pt-1.5">
+              <button class="w-6 h-6 rounded-full bg-purple-500 border border-white/20 active:scale-95 transition-transform" data-accent="purple" title="Amethyst Purple"></button>
+              <button class="w-6 h-6 rounded-full bg-blue-500 border border-white/20 active:scale-95 transition-transform" data-accent="blue" title="Royal Blue"></button>
+              <button class="w-6 h-6 rounded-full bg-fuchsia-500 border border-white/20 active:scale-95 transition-transform" data-accent="fuchsia" title="Fuchsia Pink"></button>
+              <button class="w-6 h-6 rounded-full bg-emerald-500 border border-white/20 active:scale-95 transition-transform" data-accent="emerald" title="Emerald Green"></button>
+              <button class="w-6 h-6 rounded-full bg-amber-500 border border-white/20 active:scale-95 transition-transform" data-accent="amber" title="Golden Amber"></button>
+            </div>
+          </div>
+
+          <!-- Session Statistics Counter -->
+          <div class="space-y-2">
+            <h3 class="text-xs font-semibold uppercase tracking-wider text-purple-400 font-display">Session Metrics</h3>
+            <div class="glass-light p-3 rounded-xl space-y-1 text-xs font-mono text-slate-300">
+              <div class="flex items-center justify-between">
+                <span>Duration:</span>
+                <span class="text-purple-300 font-bold" id="session-timer">00:00</span>
+              </div>
+              <div class="flex items-center justify-between">
+                <span>Name Preference:</span>
+                <span class="text-purple-300" id="session-username">Guest User</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Supported Languages Panel -->
+          <div class="space-y-2">
+            <h3 class="text-xs font-semibold uppercase tracking-wider text-purple-400 font-display">Supported Dialects</h3>
+            <div class="grid grid-cols-1 gap-2">
+              <div class="glass-light p-3 rounded-xl flex items-center justify-between">
+                <div class="flex items-center space-x-2">
+                  <span class="text-sm font-medium">English</span>
+                </div>
+                <span class="text-2xs font-mono bg-purple-500/20 text-purple-300 px-2 py-0.5 rounded-md">EN-US</span>
+              </div>
+              <div class="glass-light p-3 rounded-xl flex items-center justify-between">
+                <div class="flex items-center space-x-2">
+                  <span class="text-sm font-medium">Tamil (தமிழ்)</span>
+                </div>
+                <span class="text-2xs font-mono bg-fuchsia-500/20 text-fuchsia-300 px-2 py-0.5 rounded-md">TA-IN</span>
+              </div>
+              <div class="glass-light p-3 rounded-xl flex items-center justify-between">
+                <div class="flex items-center space-x-2">
+                  <span class="text-sm font-medium">Malayalam (മലയാളം)</span>
+                </div>
+                <span class="text-2xs font-mono bg-pink-500/20 text-pink-300 px-2 py-0.5 rounded-md">ML-IN</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Speech Engine Panel -->
+          <div class="space-y-3">
+            <h3 class="text-xs font-semibold uppercase tracking-wider text-purple-400 font-display">Voice Engine Config</h3>
+            <div class="space-y-2.5">
+              <div class="flex items-center justify-between">
+                <span class="text-xs text-slate-300">Read Aloud Responses</span>
+                <button id="tts-toggle-btn" class="w-10 h-6 bg-purple-600 rounded-full p-0.5 transition-colors duration-200 relative" aria-label="Toggle TTS">
+                  <div class="w-5 h-5 bg-white rounded-full shadow-md transform translate-x-4 transition-transform duration-200" id="tts-toggle-slider"></div>
+                </button>
+              </div>
+
+              <!-- Available Voices Status -->
+              <div class="glass-light p-3 rounded-xl space-y-2 text-xs font-mono text-slate-400">
+                <div class="flex items-center justify-between">
+                  <span>Recognition API:</span>
+                  <span class="text-emerald-400 font-semibold" id="speech-rec-status">READY</span>
+                </div>
+                <div class="flex items-center justify-between">
+                  <span>Synthesizer API:</span>
+                  <span class="text-emerald-400 font-semibold" id="speech-syn-status">READY</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Multiple Format Export utility -->
+          <div class="space-y-2">
+            <h3 class="text-xs font-semibold uppercase tracking-wider text-purple-400 font-display">Export Logs</h3>
+            <div class="grid grid-cols-3 gap-2">
+              <button id="export-txt-btn" class="py-1.5 bg-slate-800/40 hover:bg-slate-800 text-slate-300 text-3xs rounded-lg border border-slate-700/30 transition-all font-mono">
+                TXT
+              </button>
+              <button id="export-md-btn" class="py-1.5 bg-slate-800/40 hover:bg-slate-800 text-slate-300 text-3xs rounded-lg border border-slate-700/30 transition-all font-mono">
+                MD
+              </button>
+              <button id="export-json-btn" class="py-1.5 bg-slate-800/40 hover:bg-slate-800 text-slate-300 text-3xs rounded-lg border border-slate-700/30 transition-all font-mono">
+                JSON
+              </button>
+            </div>
+          </div>
+
+          <!-- Shortcuts Indicator Button -->
+          <button id="shortcuts-help-btn" class="w-full py-2 bg-slate-850/40 hover:bg-slate-800 text-slate-400 hover:text-slate-200 text-xs rounded-xl flex items-center justify-center space-x-2 border border-slate-800/80 transition-all">
+            <i data-lucide="keyboard" class="w-4 h-4"></i>
+            <span>Keyboard Shortcuts (?)</span>
+          </button>
+
+          <!-- Quick Help / Information -->
+          <div class="glass-light p-3.5 rounded-xl space-y-1.5">
+            <h4 class="text-xs font-semibold text-slate-300 font-display">About PolyTalk AI</h4>
+            <p class="text-3xs text-slate-400 leading-relaxed">
+              An intelligent, responsive multilingual companion. Features a server-secure implementation of the Gemini API with zero browser key leaks. Supports standard keyboard shortcuts and touch triggers.
+            </p>
+          </div>
+
+        </div>
+
+        <!-- Sidebar Footer -->
+        <div class="p-4 border-t border-slate-800/60 flex items-center justify-between text-2xs text-slate-500 font-mono">
+          <span>v1.0.0 (Sleek Interface)</span>
+          <span class="flex items-center">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1 animate-pulse"></span>
+            Active
+          </span>
+        </div>
+      </aside>
+
+      <!-- SIDEBAR MOBILE DRAWER BACKDROP -->
+      <div id="sidebar-backdrop" class="fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-20 hidden lg:hidden"></div>
+
+      <!-- MAIN CONTENT SPACE -->
+      <main class="flex-1 h-full flex flex-col min-w-0 overflow-hidden relative">
+        
+        <!-- Main Top Bar -->
+        <header class="h-16 border-b border-slate-800/60 glass px-4 lg:px-6 flex items-center justify-between shrink-0 relative z-10">
+          <div class="flex items-center space-x-3">
+            <button id="open-sidebar-btn" class="lg:hidden p-2 rounded-lg hover:bg-slate-800 text-slate-300" aria-label="Open Sidebar">
+              <i data-lucide="menu" class="w-5 h-5"></i>
+            </button>
+            <div class="flex items-center space-x-2">
+              <button id="header-home-btn" class="p-1.5 rounded-lg hover:bg-slate-800 text-slate-400 hover:text-slate-200" title="Back to Landing">
+                <i data-lucide="home" class="w-4 h-4"></i>
+              </button>
+              <h2 class="text-base font-bold font-display tracking-tight text-slate-200">PolyTalk AI Chat</h2>
+              <div class="hidden sm:flex items-center space-x-1.5 bg-purple-500/10 text-purple-300 text-3xs font-semibold font-mono px-2 py-0.5 rounded-full border border-purple-500/25">
+                <span>MULTILINGUAL CORE</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex items-center space-x-3">
+            <!-- Fullscreen trigger -->
+            <button id="fullscreen-btn" class="p-2 rounded-lg hover:bg-slate-800 text-slate-400 hover:text-slate-200 transition-colors" title="Toggle Fullscreen" aria-label="Toggle Fullscreen">
+              <i data-lucide="maximize-2" class="w-4 h-4"></i>
+            </button>
+            <!-- Web connection health indicator -->
+            <div class="flex items-center space-x-1.5 bg-emerald-500/10 text-emerald-400 text-3xs font-mono px-2 py-1 rounded-lg border border-emerald-500/20" id="network-status-badge">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" id="network-badge-dot"></span>
+              <span class="hidden sm:inline" id="network-badge-label">SECURE CONNECTION</span>
+            </div>
+          </div>
+        </header>
+
+        <!-- CHAT PORTAL -->
+        <div id="chat-portal" class="flex-1 overflow-y-auto p-4 lg:p-6 space-y-6 flex flex-col justify-start relative">
+          
+          <!-- INITIAL LANDING COMPONENT -->
+          <div id="landing-component" class="my-auto max-w-lg mx-auto flex flex-col items-center justify-center text-center space-y-6 py-8">
+            <!-- Giant avatar -->
+            <div class="relative group">
+              <div class="absolute -inset-1 bg-gradient-to-r from-purple-600 to-fuchsia-600 rounded-full blur opacity-40 group-hover:opacity-75 transition duration-1000 group-hover:duration-200 animate-pulse"></div>
+              <div class="relative w-20 h-20 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center shadow-2xl">
+                <i data-lucide="cpu" class="w-10 h-10 text-purple-400 group-hover:scale-110 transition-transform duration-300"></i>
+              </div>
+            </div>
+
+            <div class="space-y-2">
+              <h1 class="text-3xl font-extrabold font-display tracking-tight text-gradient">Hello, I am PolyTalk AI</h1>
+              <!-- Auto-typing dynamic text -->
+              <p class="text-sm text-slate-400 font-mono h-5 min-h-[1.25rem]" id="typewriter-sub"></p>
+            </div>
+
+            <!-- Personalized Username Input Form inside Welcome component -->
+            <div class="glass p-4 rounded-xl border border-slate-800 w-full max-w-sm space-y-2">
+              <p class="text-3xs font-mono text-slate-400 uppercase tracking-widest text-left">Configure Session Identity</p>
+              <div class="flex space-x-2">
+                <input type="text" id="username-input" placeholder="Type your name..." class="flex-1 bg-slate-950/85 border border-slate-800 rounded-xl px-3 py-1.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-purple-500" value="Guest User" />
+                <button id="save-username-btn" class="px-3 py-1.5 bg-purple-600 hover:bg-purple-500 rounded-xl text-xs font-semibold transition-colors">
+                  Save
+                </button>
+              </div>
+            </div>
+
+            <p class="text-xs text-slate-400 max-w-sm leading-relaxed">
+              Start typing below or click the microphone to trigger vocal mode. I naturally respond in English, Tamil, or Malayalam.
+            </p>
+
+            <!-- Quick suggestion grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full max-w-md pt-4">
+              <button class="suggestion-chip glass-light p-3 rounded-xl text-left text-xs hover:border-purple-500/50 hover:bg-purple-500/5 active:scale-[0.99] transition-all space-y-1 group">
+                <div class="font-semibold text-purple-300">English Prompt</div>
+                <div class="text-slate-400 truncate">Explain quantum computing in simple words.</div>
+              </button>
+              <button class="suggestion-chip glass-light p-3 rounded-xl text-left text-xs hover:border-fuchsia-500/50 hover:bg-fuchsia-500/5 active:scale-[0.99] transition-all space-y-1 group">
+                <div class="font-semibold text-fuchsia-300">Tamil Prompt</div>
+                <div class="text-slate-400 truncate">இயற்கை அழகு பற்றி ஒரு கவிதை கூறு.</div>
+              </button>
+              <button class="suggestion-chip glass-light p-3 rounded-xl text-left text-xs hover:border-pink-500/50 hover:bg-pink-500/5 active:scale-[0.99] transition-all space-y-1 group">
+                <div class="font-semibold text-pink-300">Malayalam Prompt</div>
+                <div class="text-slate-400 truncate">കേരളത്തിലെ പ്രധാന വിനോദസഞ്ചാര കേന്ദ്രങ്ങൾ ഏവ?</div>
+              </button>
+              <button class="suggestion-chip glass-light p-3 rounded-xl text-left text-xs hover:border-violet-500/50 hover:bg-violet-500/5 active:scale-[0.99] transition-all space-y-1 group">
+                <div class="font-semibold text-violet-300">Mixed Dialect</div>
+                <div class="text-slate-400 truncate">Hi, எப்படி இருக்கீங்க? Tell me about yourself.</div>
+              </button>
+            </div>
+          </div>
+
+          <!-- MESSAGES CONTAINER -->
+          <div id="messages-list" class="space-y-6 max-w-3xl mx-auto w-full hidden pb-12">
+            <!-- Dynamically populated messages go here -->
+          </div>
+
+          <!-- THINKING LOADER COMPONENT -->
+          <div id="thinking-indicator" class="hidden max-w-3xl mx-auto w-full">
+            <div class="flex items-start space-x-3.5">
+              <!-- Bot profile circle -->
+              <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-purple-600 to-fuchsia-600 flex items-center justify-center shrink-0 shadow-md">
+                <i data-lucide="bot" class="w-4 h-4 text-white"></i>
+              </div>
+              <div class="flex-1 space-y-2">
+                <div class="text-xs font-semibold text-slate-400 flex items-center space-x-2">
+                  <span>PolyTalk AI</span>
+                  <span class="text-3xs font-mono text-purple-400 uppercase tracking-widest bg-purple-500/10 px-1.5 py-0.5 rounded">thinking...</span>
+                </div>
+                <div class="glass px-4 py-3.5 rounded-2xl inline-flex items-center space-x-2 border border-purple-500/10 shadow-lg">
+                  <div class="flex space-x-1">
+                    <span class="thinking-dot"></span>
+                    <span class="thinking-dot"></span>
+                    <span class="thinking-dot"></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Floating scroll to bottom button -->
+          <button id="scroll-bottom-btn" class="fixed bottom-28 right-6 p-3 bg-purple-600 hover:bg-purple-500 text-white rounded-full shadow-2xl transition-all scale-0 opacity-0 z-30 flex items-center justify-center" title="Scroll to Bottom">
+            <i data-lucide="arrow-down" class="w-4 h-4"></i>
+          </button>
+
+        </div>
+
+        <!-- VOICE CONTROL BAR (STICKY POPUP WHENEVER VOICE SYNTHESIS STARTS) -->
+        <div id="voice-synthesis-bar" class="hidden mx-auto w-full max-w-md px-4 absolute bottom-24 left-1/2 transform -translate-x-1/2 z-20">
+          <div class="glass px-4 py-2.5 rounded-2xl shadow-2xl border border-purple-500/25 flex items-center justify-between space-x-4">
+            <div class="flex items-center space-x-2.5">
+              <span class="flex h-2 w-2 relative">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-2 w-2 bg-purple-500"></span>
+              </span>
+              <span class="text-xs text-purple-300 font-medium font-mono" id="voice-bar-text">Speaking Response...</span>
+            </div>
+            <div class="flex items-center space-x-2">
+              <button id="voice-pause-btn" class="p-2 rounded-lg bg-slate-800/80 hover:bg-slate-700/80 text-slate-200 transition-colors" title="Pause Speech" aria-label="Pause Speech">
+                <i data-lucide="pause" class="w-3.5 h-3.5"></i>
+              </button>
+              <button id="voice-stop-btn" class="p-2 rounded-lg bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 transition-colors" title="Mute/Stop Speech" aria-label="Stop Speech">
+                <i data-lucide="square" class="w-3.5 h-3.5"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- WAVEFORM WAVE CONTAINER WHILE LISTENING -->
+        <div id="voice-listening-overlay" class="hidden mx-auto w-full max-w-sm px-4 absolute bottom-24 left-1/2 transform -translate-x-1/2 z-20">
+          <div class="bg-rose-550 glass px-4 py-3 rounded-2xl shadow-2xl border border-rose-500/25 flex items-center justify-between space-x-4">
+            <div class="flex items-center space-x-3">
+              <div class="w-7 h-7 rounded-full bg-rose-500/20 flex items-center justify-center pulse-record">
+                <div class="w-3.5 h-3.5 rounded-full bg-rose-500"></div>
+              </div>
+              <span class="text-xs text-rose-300 font-semibold uppercase tracking-wide">Vocal Capture Active...</span>
+            </div>
+            <!-- Audio Waveform -->
+            <div class="flex items-end h-5">
+              <span class="wave-bar"></span>
+              <span class="wave-bar"></span>
+              <span class="wave-bar"></span>
+              <span class="wave-bar"></span>
+              <span class="wave-bar"></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- INPUT CENTER -->
+        <footer class="p-4 lg:p-6 shrink-0 border-t border-slate-800/60 glass relative z-10">
+          <div class="max-w-3xl mx-auto space-y-2">
+            
+            <!-- Floating Text input layout -->
+            <div class="relative flex items-end bg-slate-950/40 rounded-2xl border border-slate-800/80 focus-within:border-purple-500/50 focus-within:shadow-[0_0_20px_-3px_rgba(168,85,247,0.15)] transition-all px-3 py-2">
+              
+              <!-- Emoji Button -->
+              <button id="emoji-btn" class="p-2.5 rounded-xl hover:bg-slate-800 text-slate-400 hover:text-slate-200 transition-colors mb-0.5 shrink-0" title="Add Emoji" aria-label="Insert Emoji">
+                <i data-lucide="smile" class="w-5 h-5"></i>
+              </button>
+
+              <!-- Main Text Box -->
+              <textarea id="message-input" rows="1" class="flex-1 bg-transparent border-0 outline-none focus:ring-0 text-slate-100 placeholder-slate-500 text-sm py-2 px-1 max-h-48 resize-none overflow-y-auto leading-relaxed" placeholder="Type a message (Shift+Enter for newline, Enter to send)..." aria-label="Message Input"></textarea>
+
+              <!-- Vocal Mode Trigger -->
+              <button id="mic-btn" class="p-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-purple-400 hover:text-purple-300 transition-all mb-0.5 shrink-0 mx-1 flex items-center justify-center" title="Voice Input" aria-label="Trigger Speech Mode">
+                <i data-lucide="mic" class="w-5 h-5" id="mic-icon"></i>
+              </button>
+
+              <!-- Send Button -->
+              <button id="send-btn" class="p-2.5 rounded-xl bg-gradient-to-r from-purple-600 to-fuchsia-600 hover:from-purple-500 hover:to-fuchsia-500 active:scale-[0.98] text-white transition-all mb-0.5 shrink-0 shadow-md shadow-purple-500/10 flex items-center justify-center disabled:opacity-40" disabled title="Send Message" aria-label="Send">
+                <i data-lucide="send" class="w-5 h-5"></i>
+              </button>
+
+            </div>
+
+            <!-- Meta statistics row -->
+            <div class="flex items-center justify-between text-3xs text-slate-500 font-mono px-1">
+              <div class="flex items-center space-x-3">
+                <span id="char-counter">0 chars</span>
+                <span class="w-1 h-1 rounded-full bg-slate-700"></span>
+                <span id="word-counter">0 words</span>
+              </div>
+              <div class="flex items-center space-x-1.5">
+                <kbd class="px-1 bg-slate-900 border border-slate-800 rounded">Enter</kbd>
+                <span>to send</span>
+              </div>
+            </div>
+          </div>
+        </footer>
+
+        <!-- Decor Elements -->
+        <div class="absolute top-1/4 right-1/4 w-96 h-96 bg-blue-600/10 blur-[120px] rounded-full -z-0 pointer-events-none"></div>
+        <div class="absolute bottom-1/4 left-1/4 w-80 h-80 bg-purple-600/10 blur-[100px] rounded-full -z-0 pointer-events-none"></div>
+
+      </main>
+
+    </div>
+
+    <!-- MODAL OVERLAY: SHORTCUTS HELP -->
+    <div id="shortcuts-modal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-50 flex items-center justify-center hidden opacity-0 transition-opacity duration-300">
+      <div class="glass max-w-md w-full mx-4 p-6 rounded-2xl shadow-2xl border border-slate-800 space-y-4">
+        <div class="flex items-center justify-between border-b border-slate-800/60 pb-3">
+          <div class="flex items-center space-x-2">
+            <i data-lucide="keyboard" class="w-5 h-5 text-purple-400"></i>
+            <h3 class="text-base font-bold font-display text-slate-100">Keyboard Shortcuts</h3>
+          </div>
+          <button id="close-shortcuts-btn" class="p-1 rounded-lg hover:bg-slate-800 text-slate-400 hover:text-white">
+            <i data-lucide="x" class="w-4 h-4"></i>
+          </button>
+        </div>
+        <div class="space-y-3.5 text-xs text-slate-300 font-mono">
+          <div class="flex justify-between items-center">
+            <span>Send message:</span>
+            <span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded text-slate-400">Enter</span>
+          </div>
+          <div class="flex justify-between items-center">
+            <span>New line inside text:</span>
+            <span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded text-slate-400">Shift + Enter</span>
+          </div>
+          <div class="flex justify-between items-center">
+            <span>Focus Chat input:</span>
+            <span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded text-slate-400">Ctrl + /</span>
+          </div>
+          <div class="flex justify-between items-center">
+            <span>Stop active Speaking:</span>
+            <span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded text-slate-400">Esc</span>
+          </div>
+          <div class="flex justify-between items-center">
+            <span>Clear conversation:</span>
+            <span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded text-slate-400">Ctrl + Del</span>
+          </div>
+          <div class="flex justify-between items-center">
+            <span>Open this menu:</span>
+            <span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded text-slate-400">?</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL OVERLAY: CLEAR CHAT CONFIRMATION -->
+    <div id="clear-confirm-modal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-50 flex items-center justify-center hidden opacity-0 transition-opacity duration-300">
+      <div class="glass max-w-sm w-full mx-4 p-6 rounded-2xl shadow-2xl border border-slate-800 space-y-4">
+        <div class="flex items-center space-x-3 text-rose-400">
+          <i data-lucide="alert-triangle" class="w-6 h-6"></i>
+          <h3 class="text-base font-bold font-display">Confirm Reset</h3>
+        </div>
+        <p class="text-xs text-slate-300 leading-relaxed">
+          Are you absolutely sure you want to reset this conversational state? All current session message histories and voice caches will be wiped immediately.
+        </p>
+        <div class="flex space-x-3 justify-end pt-2">
+          <button id="cancel-clear-btn" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl text-xs font-semibold transition-colors">
+            Cancel
+          </button>
+          <button id="confirm-clear-btn" class="px-4 py-2 bg-rose-600 hover:bg-rose-500 text-white rounded-xl text-xs font-semibold transition-colors">
+            Reset State
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- MAIN APP SCRIPT INCLUSION -->
+    <script type="module" src="/static/js/animation.js"></script>
+    <script type="module" src="/static/js/voice.js"></script>
+    <script type="module" src="/static/js/script.js"></script>
+  </body>
+</html>

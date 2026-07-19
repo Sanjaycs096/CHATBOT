@@ -1,0 +1,5 @@
+Flask==3.0.3
+python-dotenv==1.0.1
+google-genai>=0.1.0
+requests==2.32.3
+langdetect==1.0.9
