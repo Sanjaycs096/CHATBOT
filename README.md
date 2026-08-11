@@ -1,139 +1,133 @@
-# PolyTalk AI - Multilingual AI Assistant
+<div align="center">
+  <img src="static/favicon.svg" width="100" height="100" alt="PolyTalk AI Logo" />
+  <h1>PolyTalk AI</h1>
+  <p><strong>A sleek, highly responsive, multilingual conversational companion.</strong></p>
+  
+  [![Node.js](https://img.shields.io/badge/Node.js-18.x-339933?logo=node.js&logoColor=white)](https://nodejs.org)
+  [![Python](https://img.shields.io/badge/Python-3.9+-3776AB?logo=python&logoColor=white)](https://python.org)
+  [![Groq](https://img.shields.io/badge/Groq-Llama_3.1-F26522?logo=meta&logoColor=white)](https://groq.com)
+  [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+</div>
 
-PolyTalk AI is a beautiful, premium, glassmorphic conversational companion supporting **English**, **Tamil (தமிழ்)**, and **Malayalam (മലയാളം)** via both text and voice.
+<br/>
+
+PolyTalk AI is a beautiful, premium, glassmorphic conversational interface supporting **English**, **Tamil (தமிழ்)**, and **Malayalam (മലയാളം)** via both text and voice.
 
 It incorporates full-fidelity layout design, responsive sidebars, custom-synthesized notification audio cues, real-time character/word counts, and automatic language detection with localized Speech Synthesis playback.
 
+## 📋 Table of Contents
+- [Key Features](#-key-features)
+- [Architecture](#-architecture)
+- [Tech Stack](#-tech-stack)
+- [Project Structure](#-project-structure)
+- [Installation & Setup](#-installation--setup)
+- [Testing & Quality](#-testing--quality)
+- [Security Features](#-security-features)
+- [Contributing](#-contributing)
+
 ---
 
-## Technical Architecture
-
-To align with development and deployment environments seamlessly:
-1. **Frontend**: 100% Vanilla HTML5, CSS3, and JavaScript (ES6 Modules) - entirely free of React or Vue as requested.
-2. **Backend Services**:
-   - **Production Node/Express Server (`server.ts`)**: Boots natively on port 3000 inside container sandboxes and uses Vite to bundle/serve the premium frontend and integrate securely with the Groq API.
-   - **Local Python/Flask Server (`app.py`)**: Fully integrated as requested, serving as the MVC layout controller for offline developer deployments.
+## ✨ Key Features
+- **Multilingual Context Generation:** Chat in English, Tamil, or Malayalam.
+- **Dialect Locking:** Sidebar controls to enforce AI to generate responses exclusively in a specific dialect.
+- **Regex JSON Parsing:** Robust JSON extraction mechanism bypassing typical LLM hallucination issues.
+- **Glassmorphic UI:** Smooth animations, dynamic gradient backgrounds, and an immersive user experience.
+- **Dual Server Implementations:** Bootable in Node.js (for high-scale production) or Python/Flask (for local Pythonic development).
+- **Voice Synthesis:** Reads out messages in the native language automatically via Web Speech API.
 
 ---
 
-## Folder Explanation
+## 🏛 Architecture
+PolyTalk uses a robust dual-backend architecture to bridge the gap between lightweight UI development and heavy server orchestration. 
+
+For a complete breakdown, please read our [Architecture Documentation](docs/architecture.md).
+
+---
+
+## 🛠 Tech Stack
+
+| Category | Technologies |
+| --- | --- |
+| **Frontend** | Vanilla HTML5, CSS3, JavaScript (ES6) |
+| **Styling** | Tailwind CSS via CDN, Lucide Icons |
+| **Backend (Prod)** | Node.js, Express.js, TypeScript, tsx |
+| **Backend (Dev)** | Python 3, Flask, Werkzeug |
+| **AI Models** | `llama-3.1-8b-instant` via Groq Cloud |
+| **Tooling** | Vite, dotenv, rate-limiter-flexible |
+
+---
+
+## 📁 Project Structure
 
 ```text
-multilingual-chatbot/
-│
-├── app.py                     # Main Python Flask backend server
-├── server.ts                  # Main Node/Express production backend server
-├── requirements.txt           # Python Flask dependency manifest
-├── package.json               # Node/Vite/Express dependency manifest
-├── .env.example               # Template file for secret parameters
-├── README.md                  # Comprehensive user guides and manuals
-│
+polytalk-ai/
+├── .github/                   # CI/CD Workflows and Issue Templates
+├── docs/                      # Technical Documentation
 ├── static/                    # Frontend assets
-│     ├── css/
-│     │      style.css         # Custom animations, scrollbars, and dark themes
-│     │
-│     ├── js/
-│     │      script.js         # Chat orchestrator and lightweight Markdown parser
-│     │      voice.js          # SpeechRecognition & SpeechSynthesis controllers
-│     │      animation.js      # Ambient floating bubbles, preloader, and synthesizers
-│     │
-│     └── images/              # Media resources
-│
-├── templates/
-│      index.html              # Main HTML frontend template (for Flask render)
-│
-├── chatbot/                   # Python modular AI pipeline
-│      chatbot.py              # Secure Groq API direct communication handler
-│      language_detector.py    # High-reliability Unicode script classifiers
-│      prompt_manager.py       # Conversational persona structures
-│      speech.py               # Voice locale mappings and meta configs
-│
-└── utils/
-       helpers.py              # XSS sanitizers and error handlers
+│     ├── css/                 # Glassmorphic stylesheets
+│     ├── js/                  # SPA orchestration and voice routing
+│     └── favicon.svg          # Vector branding
+├── chatbot/                   # Python AI pipeline components
+├── templates/                 # Flask HTML routes
+├── app.py                     # Local Flask server
+├── server.ts                  # Production Node server
+├── package.json               # Node dependency manifest
+├── requirements.txt           # Python dependency manifest
+└── CHANGELOG.md               # Versioning history
 ```
 
 ---
 
-## Installation & Setup
+## 🚀 Installation & Setup
 
-### Option A: Python / Flask (Local Development)
-
-#### 1. Prerequisites
-- Python 3.9 or higher
-- Pip package manager
-
-#### 2. Virtual Environment Setup
-Create and activate a isolated virtual environment to keep your system packages clean:
-
+### Option 1: Node.js (Production Mode)
+Ideal for standard deployment.
 ```bash
-# Create the environment
-python -m venv venv
-
-# Activate (macOS/Linux)
-source venv/bin/activate
-
-# Activate (Windows PowerShell)
-.\venv\Scripts\Activate.ps1
-```
-
-#### 3. Install Dependencies
-```bash
-pip install -r requirements.txt
-```
-
-#### 4. Configure Secrets
-Copy the template `.env.example` file to `.env` and fill in your Groq API Key:
-```env
-GROQ_API_KEY="YOUR_ACTUAL_API_KEY_HERE"
-```
-
-#### 5. Launch the Server
-```bash
-python app.py
-```
-The server will boot locally at **`http://127.0.0.1:5000`**.
-
----
-
-### Option B: Node / Express (Production / AI Studio)
-
-#### 1. Install Node Dependencies
-```bash
+# 1. Install dependencies
 npm install
-```
 
-#### 2. Start Development Server
-```bash
+# 2. Configure environment
+cp .env.example .env
+# Edit .env and insert your GROQ_API_KEY
+
+# 3. Start server
 npm run dev
 ```
+The server will run on **http://localhost:3000**
 
-#### 3. Build & Compile for Production
+### Option 2: Python / Flask (Development Mode)
+Ideal for AI testing and scripting.
 ```bash
-npm run build
-npm start
+# 1. Setup virtual environment
+python -m venv venv
+source venv/bin/activate  # Or .\venv\Scripts\Activate.ps1 on Windows
+
+# 2. Install dependencies
+pip install -r requirements.txt
+
+# 3. Configure environment
+cp .env.example .env
+# Edit .env and insert your GROQ_API_KEY
+
+# 4. Start server
+python app.py
 ```
+The server will run on **http://localhost:5000**
 
 ---
 
-## Groq API Configuration
-
-1. **Get an API Key**: Navigate to the [Groq Console](https://console.groq.com/) and request an API key.
-2. **Setup Secrets Safely**:
-   - For Local Python development, place the key in `.env`: `GROQ_API_KEY="gsk_..."`
-   - For the AI Studio Cloud sandbox, navigate to the **Settings > Secrets** panel in the user interface to add `GROQ_API_KEY` directly. It is injected into your server variables automatically.
+## 🛡 Security Features
+- **Prompt Injection Defense:** Both Node and Python servers run synchronous heuristics to block malicious context alterations.
+- **XSS Sanitization:** Native HTML encoding parses user output before DOM injection.
+- **Rate Limiting:** IP-based sliding window ratelimiting restricts `/chat` to prevent billing exhaustion.
+- **Error Obfuscation:** Global handlers prevent raw server traces from leaking to the frontend SPA.
 
 ---
 
-## Troubleshooting
+## 🤝 Contributing
+Contributions are what make the open-source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
 
-### Speech Synthesis / Voices Unavailable
-- **Symptoms**: No voice output or wrong dialect.
-- **Fix**: Speech synthesis relies on device-installed TTS models. For high-fidelity Tamil or Malayalam playback, ensure that Tamil/Malayalam voice synthesizers are enabled on your operating system or browser (e.g., Google TTS, Microsoft David/Zira, Apple Speech).
+Please check out our [Bug Report Template](.github/ISSUE_TEMPLATE/bug_report.yml) if you find an issue.
 
-### Microphone Capture Blocked
-- **Symptoms**: Clicking the Mic button triggers errors.
-- **Fix**: Modern browsers require active secure contexts (`https://` or `localhost`) to request microphone access. Ensure you grant mic permissions to the applet in your browser's address bar.
-
-### Groq API Connection Timeouts
-- **Symptoms**: Messages are greeted by "System Latency" notifications.
-- **Fix**: Check that your `GROQ_API_KEY` is fully correct and active, and that your server container has open outbound ports to communicate with Groq services.
+## 📄 License
+This project is open-source and available under the MIT License.
