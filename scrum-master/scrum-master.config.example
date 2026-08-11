@@ -1,0 +1,12 @@
+# Add these to your application environment configuration (e.g. .env)
+# Do NOT commit your actual .env file containing tokens to version control!
+
+# The URL of your Scrum Master instance
+SCRUM_MASTER_URL=http://localhost:8000
+
+# The secure integration token or enrollment credential
+SCRUM_MASTER_TOKEN=sm_enroll_0t_dK2jmcoeKO7saqtGSFWbCmnQK_ggbendjIyinxF8
+
+# Optional metadata overrides (autodetected if omitted)
+# SCRUM_MASTER_APPLICATION_NAME=My Existing App
+# SCRUM_MASTER_ENVIRONMENT=development
