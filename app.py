@@ -17,7 +17,7 @@ from utils.rate_limiter import limit_requests
 from utils.middleware import add_security_headers
 from utils.error_handler import handle_exception, log_security_event
 
-load_dotenv()
+load_dotenv(override=True)
 
 app = Flask(__name__, 
             static_folder='static',
@@ -43,11 +43,26 @@ def index():
     """
     return render_template('index.html')
 
+@app.errorhandler(404)
+def not_found_error(error):
+    """
+    Catch-all for 404 errors (useful for SPA behavior).
+    Redirects back to the main chat portal.
+    """
+    return render_template('index.html'), 404
+
+@app.errorhandler(500)
+def internal_error(error):
+    """
+    Catch-all for 500 errors.
+    """
+    return render_template('index.html'), 500
+
 @app.route('/chat', methods=['POST'])
 @limit_requests(limit=10, window_sec=60)
 def chat():
     """
-    Receives text messages from the client, triggers Gemini processing,
+    Receives text messages from the client, triggers Groq processing,
     and returns a structured JSON reply. Heavily validated and sanitized.
     """
     client_ip = request.headers.get("X-Forwarded-For", request.remote_addr or "127.0.0.1")
@@ -56,6 +71,7 @@ def chat():
     try:
         data = request.get_json() or {}
         user_message = data.get("message", "")
+        dialect = data.get("dialect", None)
         
         # 1. Advanced validation & Unicode normalization
         try:
@@ -76,7 +92,7 @@ def chat():
             }), 400
 
         # Query our modular chat processing framework
-        reply_payload = chatbot.generate_reply(clean_message)
+        reply_payload = chatbot.generate_reply(clean_message, dialect=dialect)
         
         # 3. Output sanitization (XSS and script injection protection)
         if reply_payload and "response" in reply_payload:
@@ -97,6 +113,5 @@ def serve_static(path):
     return send_from_directory('static', path)
 
 if __name__ == '__main__':
-    # Bind to host 0.0.0.0 and port 3000 as required by the runtime environment
-    app.run(host='0.0.0.0', port=3000, debug=False)
-
+    # Bind to host 0.0.0.0 and port 5000 to avoid conflict with the Node.js server
+    app.run(host='0.0.0.0', port=5000, debug=False)

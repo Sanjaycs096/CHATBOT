@@ -11,6 +11,7 @@ import { toggleSpeechRecognition, speakResponse, showToast, stopSpeaking, pauseS
 let chatHistory = [];
 let sessionDurationSeconds = 0;
 let timerInterval = null;
+let selectedDialect = null; // null = auto detect
 
 // Native lightweight secure Markdown parser
 function parseMarkdown(text) {
@@ -311,7 +312,7 @@ async function sendChatMessage(text) {
     const res = await fetch('/chat', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ message: text })
+      body: JSON.stringify({ message: text, dialect: selectedDialect })
     });
 
     if (!res.ok) {
@@ -337,7 +338,7 @@ async function sendChatMessage(text) {
     console.error("Chat transmission issue:", err);
     if (thinking) thinking.classList.add('hidden');
     
-    appendMessage('bot', `⚠️ **Transmission Error**: We are unable to connect to the Google Gemini AI Server. Please verify your internet connection or check your API Secrets. \n\n*Error logs:* \`\`\`${err.message}\`\`\``, 'English');
+    appendMessage('bot', `⚠️ **Transmission Error**: We are unable to connect to the Groq API Server. Please verify your internet connection or check your API Secrets. \n\n*Error logs:* \`\`\`${err.message}\`\`\``, 'English');
     playSound('error');
   } finally {
     // Re-enable inputs
@@ -447,6 +448,27 @@ function initSidebarNavigation() {
   openBtn.addEventListener('click', openSidebar);
   closeBtn.addEventListener('click', closeSidebar);
   backdrop.addEventListener('click', closeSidebar);
+}
+
+// Dialect Picker functionality
+function initDialectPicker() {
+  const dials = document.querySelectorAll('.dialect-picker-btn');
+  dials.forEach(btn => {
+    btn.addEventListener('click', () => {
+      // Toggle logic
+      if (btn.classList.contains('ring-2')) {
+        btn.classList.remove('ring-2', 'ring-purple-500');
+        selectedDialect = null;
+        showToast("Auto language detection enabled.");
+      } else {
+        dials.forEach(b => b.classList.remove('ring-2', 'ring-purple-500'));
+        btn.classList.add('ring-2', 'ring-purple-500');
+        selectedDialect = btn.getAttribute('data-lang');
+        showToast(`AI locked to ${selectedDialect} mode.`);
+      }
+      playSound('click');
+    });
+  });
 }
 
 // Emoji panel utility injections
@@ -854,6 +876,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initSidebarNavigation();
   initEmojiPicker();
   initTextareaAutoGrow();
+  initDialectPicker();
   initUserPreferences();
   initThemeAccentPicker();
   initScrollBottomController();

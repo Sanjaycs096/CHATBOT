@@ -11,7 +11,7 @@ It incorporates full-fidelity layout design, responsive sidebars, custom-synthes
 To align with development and deployment environments seamlessly:
 1. **Frontend**: 100% Vanilla HTML5, CSS3, and JavaScript (ES6 Modules) - entirely free of React or Vue as requested.
 2. **Backend Services**:
-   - **Production Node/Express Server (`server.ts`)**: Boots natively on port 3000 inside container sandboxes and uses Vite to bundle/serve the premium frontend and integrate securely with the Google GenAI API.
+   - **Production Node/Express Server (`server.ts`)**: Boots natively on port 3000 inside container sandboxes and uses Vite to bundle/serve the premium frontend and integrate securely with the Groq API.
    - **Local Python/Flask Server (`app.py`)**: Fully integrated as requested, serving as the MVC layout controller for offline developer deployments.
 
 ---
@@ -43,7 +43,7 @@ multilingual-chatbot/
 │      index.html              # Main HTML frontend template (for Flask render)
 │
 ├── chatbot/                   # Python modular AI pipeline
-│      chatbot.py              # Secure Gemini API direct communication handler
+│      chatbot.py              # Secure Groq API direct communication handler
 │      language_detector.py    # High-reliability Unicode script classifiers
 │      prompt_manager.py       # Conversational persona structures
 │      speech.py               # Voice locale mappings and meta configs
@@ -82,16 +82,16 @@ pip install -r requirements.txt
 ```
 
 #### 4. Configure Secrets
-Copy the template `.env.example` file to `.env` and fill in your Gemini API Key:
+Copy the template `.env.example` file to `.env` and fill in your Groq API Key:
 ```env
-GEMINI_API_KEY="YOUR_ACTUAL_API_KEY_HERE"
+GROQ_API_KEY="YOUR_ACTUAL_API_KEY_HERE"
 ```
 
 #### 5. Launch the Server
 ```bash
 python app.py
 ```
-The server will boot locally at **`http://127.0.0.1:3000`**.
+The server will boot locally at **`http://127.0.0.1:5000`**.
 
 ---
 
@@ -115,12 +115,12 @@ npm start
 
 ---
 
-## Gemini API Configuration
+## Groq API Configuration
 
-1. **Get an API Key**: Navigate to the [Google AI Studio Console](https://aistudio.google.com/) and request an API key.
+1. **Get an API Key**: Navigate to the [Groq Console](https://console.groq.com/) and request an API key.
 2. **Setup Secrets Safely**:
-   - For Local Python development, place the key in `.env`: `GEMINI_API_KEY="AIzaSy..."`
-   - For the AI Studio Cloud sandbox, navigate to the **Settings > Secrets** panel in the user interface to add `GEMINI_API_KEY` directly. It is injected into your server variables automatically.
+   - For Local Python development, place the key in `.env`: `GROQ_API_KEY="gsk_..."`
+   - For the AI Studio Cloud sandbox, navigate to the **Settings > Secrets** panel in the user interface to add `GROQ_API_KEY` directly. It is injected into your server variables automatically.
 
 ---
 
@@ -134,6 +134,6 @@ npm start
 - **Symptoms**: Clicking the Mic button triggers errors.
 - **Fix**: Modern browsers require active secure contexts (`https://` or `localhost`) to request microphone access. Ensure you grant mic permissions to the applet in your browser's address bar.
 
-### Gemini API Connection Timeouts
+### Groq API Connection Timeouts
 - **Symptoms**: Messages are greeted by "System Latency" notifications.
-- **Fix**: Check that your `GEMINI_API_KEY` is fully correct and active, and that your server container has open outbound ports to communicate with Google services.
+- **Fix**: Check that your `GROQ_API_KEY` is fully correct and active, and that your server container has open outbound ports to communicate with Groq services.
