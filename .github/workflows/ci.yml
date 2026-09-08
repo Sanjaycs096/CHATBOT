@@ -42,4 +42,4 @@ jobs:
       run: npm run build
       
     - name: Security Audit (npm)
-      run: npm audit
+      run: npm audit --audit-level=high
